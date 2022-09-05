@@ -1,25 +1,25 @@
-import { Controller, Get, Render } from "@nestjs/common";
+import { Controller, Get, Render } from '@nestjs/common';
 
 @Controller()
-export class AppController{
-  @Get("/")
+export class AppController {
+  @Get('/')
   @Render('index')
-  index(){
-    let viewData = [];
-    viewData["title"] = 'Home Page - Online Store';
+  index() {
+    const viewData = [];
+    viewData['title'] = 'Home Page - Online Store';
     return {
       viewData: viewData,
     };
   }
 
-  @Get("/about")
+  @Get('/about')
   @Render('about')
-  about(){
+  about() {
     const viewData = [];
-    viewData["title"] = 'About us - Online Store';
-    viewData["subtitle"] = 'About us';
-    viewData["description"] = 'This is an about page ...'
-    viewData["author"] = "Developed by: Jéss Gonçalves"
+    viewData['title'] = 'About us - Online Store';
+    viewData['subtitle'] = 'About us';
+    viewData['description'] = 'This is an about page ...';
+    viewData['author'] = 'Developed by: Jéss Gonçalves';
     return {
       viewData: viewData,
     };
