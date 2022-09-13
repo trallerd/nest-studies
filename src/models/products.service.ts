@@ -17,4 +17,8 @@ export class ProductService{
     findOne(id: string): Promise<Product>{
         return this.productsRepository.findOne({where:{id:parseInt(id)}});
     }
+
+    createOrUpdate(product: Product): Promise<Product>{
+        return this.productsRepository.save(product);
+    }
 }
