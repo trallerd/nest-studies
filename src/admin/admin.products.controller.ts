@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Redirect, Render, UseInterceptors, UploadedFile } from "@nestjs/common";
+import { Body, Controller, Get, Post, Redirect, Render, UseInterceptors, UploadedFile, Param } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { Product } from "../models/product.entity";
 import { ProductService } from "../models/products.service";
@@ -19,14 +19,20 @@ export class AdminProductsController {
     }
 
     @Post('/store')
-    @UseInterceptors(FileInterceptor('image', {dest: './public/uploads'}))
+    @UseInterceptors(FileInterceptor('image', { dest: './public/uploads' }))
     @Redirect('/admin/products')
-    async store(@Body() body, @UploadedFile() file: Express.Multer.File){
+    async store(@Body() body, @UploadedFile() file: Express.Multer.File) {
         const newProduct = new Product();
         newProduct.setName(body.name);
         newProduct.setDescription(body.description);
         newProduct.setPrice(body.price);
         newProduct.setImage(file.filename);
         await this.productService.createOrUpdate(newProduct);
+    }
+
+    @Post('/:id')
+    @Redirect('admin/products')
+    remove(@Param('id') id: string) {
+        return this.productService.remove(id);
     }
 }
