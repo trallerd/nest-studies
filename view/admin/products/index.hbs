@@ -5,13 +5,18 @@
         Create Products
     </div>
     <div class="card-body">
+        {{#if flashErrors}}
+        {{#each flashErrors}}
+        <p class="alert alert-danger">{{this}}</p>
+        {{/each}}
+        {{/if}}
         <form action="/admin/products/store" method="POST" enctype="multipart/form-data">
             <div class="row">
                 <div class="col">
                     <div class="mb-3">
                         <label class="col-lg-2 col-md-6 col-sm-12 col-form-label">Name:</label>
                         <div class="col-lg-10 col-md-6 col-sm-12">
-                            <input type="text" name="name" id="name" class="form-control" required>
+                            <input type="text" name="name" id="name" class="form-control" >
                         </div>
                     </div>
                 </div>
@@ -19,7 +24,7 @@
                     <div class="mb-3">
                         <label class="col-lg-2 col-md-6 col-sm-12 col-form-label">Price:</label>
                         <div class="col-lg-10 col-md-6 col-sm-12">
-                            <input type="text" name="price" id="price" class="form-control" required>
+                            <input type="text" name="price" id="price" class="form-control" >
                         </div>
                     </div>
                 </div>
@@ -35,7 +40,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Description</label>
-                    <textarea class="form-control" name="description" rows="3" required></textarea>
+                    <textarea class="form-control" name="description" rows="3" ></textarea>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Submit</button>
