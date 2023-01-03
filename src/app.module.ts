@@ -8,6 +8,7 @@ import { AdminModule } from './admin/admin.module';
 import { User } from './models/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { UserService } from './models/user.service';
+import { CartModule } from './cart/cart.module';
 
 @Global()
 @Module({
@@ -23,7 +24,8 @@ import { UserService } from './models/user.service';
     }),
     TypeOrmModule.forFeature([Product, User]),
     AdminModule,
-    AuthModule
+    AuthModule,
+    CartModule,
   ],
   controllers: [AppController, ProductsController],
   providers: [ProductService, UserService],

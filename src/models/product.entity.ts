@@ -1,60 +1,68 @@
 import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export class Product{
+export class Product {
     @PrimaryGeneratedColumn()
-    id:number;
+    id: number;
 
     @Column()
-    name:string;
+    name: string;
 
     @Column()
-    description:string;
+    description: string;
 
     @Column()
-    image:string;
+    image: string;
 
     @Column()
-    price:number;
+    price: number;
 
 
-    getId(): number{
+    getId(): number {
         return this.id;
     }
 
-    setId(id: number){
+    setId(id: number) {
         this.id = id;
     }
 
-    getName(): string{
+    getName(): string {
         return this.name;
     }
 
-    setName(name: string){
+    setName(name: string) {
         this.name = name;
     }
 
-    getDescription(): string{
+    getDescription(): string {
         return this.description;
     }
 
-    setDescription(description: string){
+    setDescription(description: string) {
         this.description = description;
     }
 
-    getImage(): string{
+    getImage(): string {
         return this.image;
     }
 
-    setImage(image: string){
+    setImage(image: string) {
         this.image = image;
     }
 
-    getPrice(): number{
+    getPrice(): number {
         return this.price;
     }
 
-    setPrice(price: number){
+    setPrice(price: number) {
         this.price = price;
+    }
+
+    static sumPriceByQuantities(products: Product[], productsInSession): number {
+        let total = 0;
+        for (let i = 0; i < products.length; i++) {
+            total = total + products[i].getPrice() * productsInSession[products[i].getId()];
+        }
+        return total;
     }
 }
