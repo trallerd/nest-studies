@@ -1,9 +1,11 @@
-import { Body, Controller, Get, Post, Redirect, Render, UseInterceptors, UploadedFile, Param, Req } from "@nestjs/common";
+import { Body, Controller, Get, Post, Redirect, Render, UseInterceptors, UploadedFile, Param, Req, Res } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { Product } from "../models/product.entity";
 import { ProductService } from "../models/products.service";
 import { ProductValidator } from "../validators/product.validator";
 import * as fs from 'fs';
+import { request } from "http";
+import { response } from "express";
 @Controller('/admin/products')
 export class AdminProductsController {
     constructor(private readonly productService: ProductService) { }
@@ -59,19 +61,31 @@ export class AdminProductsController {
 
     @Post('/:id/update')
     @UseInterceptors(FileInterceptor('image', { dest: './public/uploads' }))
-    @Redirect('/admin/products')
     async update(
         @Body() body,
         @UploadedFile() file: Express.Multer.File,
         @Param('id') id: string,
+        @Req() request,
+        @Res() response,
     ) {
-        const product = await this.productService.findOne(id);
-        product.setName(body.name);
-        product.setDescription(body.description);
-        product.setPrice(body.price);
-        if (file) {
-            product.setImage(file.filename);
+        const toValidate: string[] = ['name', 'description', 'price', 'imageUpdate'];
+        const errors: string[] = ProductValidator.validate(body, file, toValidate);
+        if (errors.length > 0) {
+            if (file) {
+                fs.unlinkSync(file.path);
+            }
+            request.session.flashErrors = errors;
+            return response.redirect('/admin/products/' + id);
+        } else {
+            const product = await this.productService.findOne(id);
+            product.setName(body.name);
+            product.setDescription(body.description);
+            product.setPrice(body.price);
+            if (file) {
+                product.setImage(file.filename);
+            }
+            await this.productService.createOrUpdate(product);
+            return response.redirect('/admin/products/');
         }
-        await this.productService.createOrUpdate(product);
     }
 }
