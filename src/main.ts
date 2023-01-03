@@ -13,6 +13,7 @@ async function bootstrap() {
   hbs.registerPartials(join(__dirname, '..', 'view/layouts'));
   hbsUtils(hbs).registerWatchedPartials(join(__dirname, '..', 'view/layouts'));
   app.setViewEngine('hbs');
+
   app.use(
     session({
       secret: 'nest-book',
@@ -20,6 +21,7 @@ async function bootstrap() {
       saveUninitialized: false,
     }),
   );
+
   app.use(function (req, res, next) {
     res.locals.session = req.session;
     const flashErrors: string[] = req.session.flashErrors;
@@ -29,6 +31,16 @@ async function bootstrap() {
     }
     next();
   });
+
+  app.use('/admin*', function (req, res, next) {
+    console.log(`Request...`, req.session.role);
+    if (req.session.user && req.session.user.role == 'admin') {
+      next();
+    } else {
+      res.redirect('/');
+    }
+  })
+
   await app.listen(3000);
 }
 bootstrap();
