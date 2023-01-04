@@ -28,4 +28,12 @@ export class UserService {
         return null
     }
 
+    findOne(id: string): Promise<User> {
+        return this.usersRespository.findOne({ where: { id: parseInt(id) } });
+    }
+
+    updateBalance(id: number, balance: number) {
+        return this.usersRespository.update(id, { balance: balance });
+    }
+
 }

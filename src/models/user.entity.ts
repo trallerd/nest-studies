@@ -64,7 +64,7 @@ export class User {
         this.role = role;
     }
 
-    getBalance(balance: number) {
+    getBalance() {
         return this.balance;
     }
 

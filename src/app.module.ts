@@ -9,6 +9,8 @@ import { User } from './models/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { UserService } from './models/user.service';
 import { CartModule } from './cart/cart.module';
+import { Order } from './models/order.entity';
+import { OrderService } from './models/order.service';
 
 @Global()
 @Module({
@@ -22,13 +24,13 @@ import { CartModule } from './cart/cart.module';
       "entities": ["dist/**/*.entity{.ts,.js}"],
       "synchronize": true,
     }),
-    TypeOrmModule.forFeature([Product, User]),
+    TypeOrmModule.forFeature([Product, User, Order]),
     AdminModule,
     AuthModule,
     CartModule,
   ],
   controllers: [AppController, ProductsController],
-  providers: [ProductService, UserService],
-  exports: [ProductService, UserService],
+  providers: [ProductService, UserService, OrderService],
+  exports: [ProductService, UserService, OrderService],
 })
 export class AppModule { }
