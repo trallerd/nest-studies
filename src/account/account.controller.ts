@@ -11,6 +11,7 @@ export class AccountController {
         const viewData = [];
         viewData['title'] = 'My Orders - Online Store';
         viewData['subtitle'] = 'My Orders';
+        console.log(request.session.user);
         viewData['orders'] = await this.orderService.findByUserId(
             request.session.user.id,
         );

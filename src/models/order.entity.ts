@@ -53,4 +53,12 @@ export class Order {
     setItems(items: Item[]) {
         this.items = items;
     }
+
+    setDate(date: Date) {
+        this.date = date;
+    }
+
+    getDate(): string {
+        return this.date.toISOString().split('T')[0];
+    }
 }
